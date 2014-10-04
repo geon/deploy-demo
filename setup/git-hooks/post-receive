@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Stop the server
+sudo stop deploy-demo
+
+# Stash the local config, so it won't be overwritten.
+mv ../deploy-demo/config.js ../deploy-demo/config.js.local
+
+# Update the files.
+git --work-tree=../deploy-demo checkout -f master
+
+# Un-stash the local config, in case it was overwritten.
+mv ../deploy-demo/config.js.local ../deploy-demo/config.js
+
+# Install any new dependencies.
+cd ../deploy-demo
+npm install
+
+# Start the server.
+sudo start deploy-demo
